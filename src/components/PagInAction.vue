@@ -29,7 +29,7 @@
 
 <script>
 	export default {
-		name: "Paginaction",
+		name: "PagInAction",
 		data () {
 			return {
 				current: this.currentPage
