@@ -23,13 +23,13 @@
                 </li>
             </ul>
         </nav>
-        <!--<v-pagination :total="total" :current-page='current' @pagechange="pagechange"></v-pagination>-->
+        <!--<Paging :total="total" :current-page='current' @pageChange="pageChange"></Paging>-->
     </div>
 </template>
 
 <script>
 	export default {
-		name: "PagInAction",
+		name: "Paging",
 		data () {
 			return {
 				current: this.currentPage
@@ -96,7 +96,7 @@
 			setCurrent: function (idx) {
 				if (this.current !== idx && idx > 0 && idx < this.page + 1) {
 					this.current = idx
-					this.$emit("pagechange", this.current)
+					this.$emit("pageChange", this.current)
 				}
 			}
 		}

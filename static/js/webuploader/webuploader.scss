@@ -1,0 +1,48 @@
+.webuploader-container {
+  position:relative;
+}
+.webuploader-element-invisible {
+  position:absolute !important;
+  clip:rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip:rect(1px, 1px, 1px, 1px);
+}
+.webuploader-pick {
+  position:relative;
+  display:inline-block;
+  cursor:pointer;
+  background:#00b7ee;
+  padding:10px 15px;
+  color:#fff;
+  text-align:center;
+  border-radius:3px;
+  overflow:hidden;
+}
+.webuploader-pick-hover {
+  background:#00a2d4;
+}
+.webuploader-pick-disable {
+  opacity:0.6;
+  pointer-events:none;
+}
+.uploader-list {
+  & .file-item {
+    display:inline-block;position:relative;
+    & .file-info {
+      background:rgba(0, 0, 0, .5);height:20px;line-height:20px;text-align:center;font-size:12px;position:absolute;z-index:10;color:#fff;left:4px;top:84px;right:4px;white-space:nowrap;overflow:hidden;-ms-text-overflow:ellipsis;text-overflow:ellipsis;
+    }
+    & .file-panel {
+      position:absolute;left:4px;top:4px;right:4px;z-index:10;color:#fff;background:rgba(0, 0, 0, .5);height:0;padding:0 10px;text-align:right;-webkit-transition:all .3s ease 0s;-moz-transition:all .3s ease 0s;-ms-transition:all .3s ease 0s;transition:all .3s ease 0s;overflow:hidden;
+      & .state {display:inline-block;float:left;font-size:12px;line-height:24px;}
+      & .cancel {
+        display:inline-block;float:right;cursor:pointer;line-height:24px;
+      }
+    }
+    & .progress {
+      margin:5px 0;
+    }
+    &:hover {
+      & .file-panel {height:24px;}
+    }
+
+  }
+}
