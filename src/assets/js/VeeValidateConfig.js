@@ -59,10 +59,11 @@ Validator.extend("qq", {
 		return /^[1-9][0-9]{4,14}$/.test(value)
 	}
 })
+
 // 手机号
 Validator.extend("mobile", {
-	getMessage: field => "请输入正确的手机号码",
-	validate: value => value.length === 11 && /^1[3-8][0-9]{9}$/.test(value)
+	getMessage: (field) => `${field}请输入正确的手机号码`,
+	validate: value => value.length === 11 && /^1[3-9][0-9]{9}$/.test(value)
 })
 // 18位或带X身份证号
 Validator.extend("idCard", {
