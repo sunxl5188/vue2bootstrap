@@ -19,7 +19,7 @@ const dictionary = {
 			money: "数字",
 			date: "日期"
 		},
-		custom:{}
+		custom: {}
 	}
 }
 Validator.localize(dictionary)
@@ -51,34 +51,35 @@ const config = {
 	validity: false
 }
 
-// 自定义规则
+// 自定义规则***************************************************
+
 // QQ号
 Validator.extend("qq", {
-	getMessage: field => "请输入正确的QQ号",
-	validate: value => {
+	getMessage: (field, args) => `${args}`||`请输入正确的${field}`,
+	validate: (value) => {
 		return /^[1-9][0-9]{4,14}$/.test(value)
 	}
 })
 
 // 手机号
 Validator.extend("mobile", {
-	getMessage: (field) => `${field}请输入正确的手机号码`,
-	validate: value => value.length === 11 && /^1[3-9][0-9]{9}$/.test(value)
+	getMessage: (field, args) => `${args}` || `请输入正确的${field}`,
+	validate: (value) => value.length === 11 && /^1[3-9][0-9]{9}$/.test(value)
 })
 // 18位或带X身份证号
 Validator.extend("idCard", {
-	getMessage: field => "请输入18位正确的身份证号",
-	validate: value => /^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|31)|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}([0-9]|x|X)$/.test(value)
+	getMessage: (field, args) => `${args}`||`请输入18位正确的${field}`,
+	validate: (value) => /^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|31)|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}([0-9]|x|X)$/.test(value)
 })
 // 正整数或带两位小数验证货币
 Validator.extend("money", {
-	getMessage: field => "请输入正确的数字",
-	validate: value => /^[1-9]\d*\.\d{2}|^0\.\d[1-9]{1}|^0\.[1-9][\d]{1}|^[1-9]\d*$/.test(value)
+	getMessage: (field, args) => `${args}`|| `请输入正确的${field}`,
+	validate: (value) => /^[1-9]\d*\.\d{2}|^0\.\d[1-9]{1}|^0\.[1-9][\d]{1}|^[1-9]\d*$/.test(value)
 })
 // 日期 YYYY/MM/DD
 Validator.extend("date", {
-	getMessage: field => "日期格式不正确",
-	validate: value => /^(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})(-|\/)(((0[13578]|1[02])(-|\/)(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02(-|\/)(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))(-|\/)02(-|\/)29)$/.test(value)
+	getMessage: (field, args) => `${args}`|| `${field}格式不正确`,
+	validate: (value) => /^(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})(-|\/)(((0[13578]|1[02])(-|\/)(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02(-|\/)(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))(-|\/)02(-|\/)29)$/.test(value)
 })
 
 Vue.use(VeeValidate, config)
