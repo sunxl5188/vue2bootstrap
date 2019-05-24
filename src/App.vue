@@ -9,6 +9,9 @@
     		<li>
     			<router-link to="/Form">表单提交</router-link>
     		</li>
+			<li>
+    			<router-link to="/draggable">托拽排列</router-link>
+    		</li>
     	</ul>
     </nav>
     <transition name="custom-classes-transition" enter-class="animated"  leave-class="animated fadeOut" >
