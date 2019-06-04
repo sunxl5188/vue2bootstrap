@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "@@/css/main.scss"
 import "@@/js/bootstrap"
 import VueCookies from "vue-cookies"
-import layDate from "@@/js/layDate/laydate"
+import laydate from "@@/js/laydate/laydate"
 import layer from "vue-layer"
 import Vue from "vue"
 import App from "./App"
@@ -13,8 +13,8 @@ import router from "./router"
 import VueDraggable from "vue-draggable"
 import "vue-draggable/polyfills" // IE9
 
-layDate.path = "//" + window.location.host + "/static/js/layDate/"
-Vue.prototype.layDate = layDate
+laydate.path = "//" + window.location.host + "/static/js/laydate/"
+Vue.prototype.laydate = laydate
 
 Vue.prototype.layer = layer(Vue, {
 	msgtime: 2
