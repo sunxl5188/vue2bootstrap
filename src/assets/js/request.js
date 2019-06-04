@@ -1,4 +1,4 @@
-class requestA {
+class request {
 	constructor () {
 		this.baseUrl = "http://www.js.me/demo/"
 		this.timeOut = 3000
@@ -98,5 +98,4 @@ class requestA {
 	}
 }
 
-let request = new requestA()
 export default request
