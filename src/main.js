@@ -14,6 +14,7 @@ import VueDraggable from "vue-draggable"
 import "vue-draggable/polyfills" // IE9
 
 laydate.path = "//" + window.location.host + "/static/js/laydate/"
+laydate.config.theme = "#547bbd"
 Vue.prototype.laydate = laydate
 
 Vue.prototype.layer = layer(Vue, {
