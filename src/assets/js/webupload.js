@@ -1,10 +1,9 @@
-require("webuploader/dist/webuploader.css")
 import webuploader from "webuploader"
 
-export default function webUpload (options) {
+export default function webUpload (options, vue) {
 	let config = {
 		auto: true,
-		swf: "/static/js/webuploader/Uploader.swf",
+		swf: "/static/Uploader.swf",
 		server: "http://www.js.me/demo/data.php?action=all",
 		pick: {
 			id: "#picker",
@@ -22,7 +21,7 @@ export default function webUpload (options) {
 		formData: {},
 		fileVal: "file",
 		method: "POST",
-		fileNumLimit: undefined, // 验证文件总数量
+		fileNumLimit: 1, // 验证文件总数量
 		fileSizeLimit: undefined, // 验证文件总大小是否超出限制
 		fileSingleSizeLimit: 1024 * 1024 * 2 // 验证单个文件大小是否超出限制
 	}
@@ -34,7 +33,7 @@ export default function webUpload (options) {
 	if (opts.imageList) {
 		uploader.on("fileQueued", function (file) {
 			let $li = $(
-					"<div id=\"" + file.id + "\" class=\"file-item thumbnail\" fid='" + file.name + "''>" +
+				"<div id=\"" + file.id + "\" class=\"file-item thumbnail\" fid='" + file.name + "''>" +
 				"<img>" +
 				"<div class=\"file-info\">" + file.name + "</div>" +
 				"<div class=\"file-panel\"><span class=\"state\"></span><span class=\"cancel glyphicon glyphicon-trash\"></span></div>" +
@@ -60,4 +59,28 @@ export default function webUpload (options) {
 			})
 		})
 	}
+
+	// 上传文件时进度条
+	uploader.on("uploadProgress", function (file, percentage) {
+		console.log(file, percentage)
+	})
+
+	// 上传成功
+	uploader.on("uploadSuccess", function (file, response) {
+
+	})
+
+	// 返回错误信息
+	uploader.on("error", function (error) {
+		if (error === "F_EXCEED_SIZE") {
+			vue.layer.alert("文件超出指定大小", {icon: 2})
+		}
+		if (error === "Q_TYPE_DENIED") {
+			vue.layer.alert("文件类型不正确！", {icon: 2})
+		}
+		if (error === "Q_EXCEED_NUM_LIMIT") {
+			vue.layer.alert("文件超出个数！", {icon: 2})
+		}
+	})
+
 }

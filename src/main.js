@@ -2,11 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import "animate.css/animate.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
-import "@@/css/main.scss"
+import "@@/css/main.css"
 import "@@/js/bootstrap"
 import VueCookies from "vue-cookies"
+import layer from "layui-layer"
 import laydate from "@@/js/laydate/laydate"
-import layer from "vue-layer"
 import Vue from "vue"
 import App from "./App"
 import router from "./router"
@@ -16,10 +16,8 @@ import "vue-draggable/polyfills" // IE9
 laydate.path = "//" + window.location.host + "/static/js/laydate/"
 laydate.config.theme = "#547bbd"
 Vue.prototype.laydate = laydate
+Vue.prototype.layer = layer
 
-Vue.prototype.layer = layer(Vue, {
-	msgtime: 2
-})
 
 Vue.use(VueCookies)
 Vue.use(VueDraggable)
