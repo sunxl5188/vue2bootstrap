@@ -3,6 +3,7 @@ import Router from "vue-router"
 import Home from "@/components/Home"
 import List from "@/components/List"
 import Draggable from "@/components/Draggable"
+import Upload from "@/components/Upload"
 import Error from "@/components/Error"
 
 Vue.use(Router)
@@ -10,19 +11,10 @@ Vue.use(Router)
 export default new Router({
 	mode: "history",
 	routes: [
-		{
-			path: "/",
-			name: "Home",
-			component: Home
-		},
-		{
-			path: "/List", name: "List", component: List
-		},
-		{
-			path: "/draggable", name: "draggable", component: Draggable
-		},
-		{
-			path: "*", name: "Error", component: Error
-		}
+		{ path: "/", name: "Home", component: Home },
+		{ path: "/List", name: "List", component: List },
+		{ path: "/draggable", name: "draggable", component: Draggable },
+		{ path: "/upload", name: "upload", component: Upload },
+		{ path: "*", name: "Error", component: Error }
 	]
 })

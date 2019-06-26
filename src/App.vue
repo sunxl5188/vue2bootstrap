@@ -12,6 +12,9 @@
 			<li>
     			<router-link to="/draggable">托拽排列</router-link>
     		</li>
+			<li>
+    			<router-link to="/upload">文件上传</router-link>
+    		</li>
     	</ul>
     </nav>
     <transition name="custom-classes-transition" enter-class="animated"  leave-class="animated fadeOut" >
