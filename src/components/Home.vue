@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <a href="javascript:void(0);" class="linkCss3">css3</a>
+        <div id="map" style="height: 500px;"></div>
     </div>
 </template>
 
@@ -15,7 +16,11 @@
 			}
 		},
 		mounted () {
-
+			let map
+			map = new google.maps.Map(document.getElementById("map"), {
+				center: {lat: -34.397, lng: 150.644},
+				zoom: 8
+			})
 		},
 		methods: {},
 		components: {}
