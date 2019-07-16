@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "fullcalendar": "^3.10.0",
     "html2canvas": "^1.0.0-rc.3",
     "jspdf": "^1.5.3",
     "layui-layer": "^1.0.9",
@@ -19,6 +18,7 @@
     "vue": "^2.5.2",
     "vue-cookies": "^1.5.13",
     "vue-draggable": "^2.0.2",
+    "vue-fullcalendar": "^1.0.9",
     "vue-router": "^3.0.1",
     "webuploader": "^0.1.8"
   },
