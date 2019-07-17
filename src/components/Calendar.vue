@@ -8,6 +8,25 @@
                 @dayClick="dayClick"
                 @moreClick="moreClick"
         />
+        <a class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modal-id">Trigger modal</a>
+        <div class="modal fade" id="modal-id">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        Modal body ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -21,21 +40,9 @@
 				monthData: [
 					{
 						title: "eeeeeeeee",  // 事件内容
-						start: "2019-07-11", // 事件开始时间
-						end: "2019-07-30",   // 事件结束时间
+						start: "2019-07-19", // 事件开始时间
+						end: "2019-07-20",   // 事件结束时间
 						cssClass: "blue"     // 事件的样式   class名（由后台返回数据）  red为自己定义的class名
-					},
-					{
-						title: "eeeeeeeee",
-						start: "2019-07-10",
-						end: "2019-07-11",
-						cssClass: "pink"
-					},
-					{
-						title: "11111",
-						start: "2019-07-10",
-						end: "2019-07-11",
-						cssClass: "pink"
 					}
 				]
 			}
@@ -43,6 +50,7 @@
 		computed: {},
 		mounted () {
 			let self = this
+
 		},
 		methods: {
 			// 选择月份
@@ -55,6 +63,13 @@
 			},
 			// 点击当天
 			dayClick (day, jsEvent) {
+				let self = this
+				self.monthData.push({
+					title: "(无标题)",  // 事件内容
+					start: "2019-07-21", // 事件开始时间
+					end: "2019-07-22",   // 事件结束时间
+					cssClass: "blue"     // 事件的样式   class名（由后台返回数据）  red为自己定义的class名
+				})
 				console.log("dayClick", day, jsEvent)
 			},
 			// 查看更多
@@ -71,38 +86,44 @@
 </script>
 
 <style lang="scss">
-    .comp-full-calendar {max-width: none;}
+    .comp-full-calendar {
+        max-width:none;height:800px;
+        & .full-calendar-body{
+            height:100%;
+            & .dates {
+                & .dates-events .events-week .events-day {
+                    min-height:100px;
 
-    .full-calendar-body .dates {
-        & .dates-events .events-week .events-day {
-            min-height: 100px;
+                    & .event-box .event-item {
+                        &.blue {
+                            background-color:#cceefe;
+                            color:#135a82;
+                        }
 
-            & .event-box .event-item {
-                &.blue {
-                    background-color: #cceefe;
-                    color: #135a82;
+                        &.pink {
+                            background-color:#fce5e0;
+                            color:#666;
+                        }
+                    }
                 }
 
-                &.pink {
-                    background-color: #fce5e0;
-                    color: #666;
+                & .week-row .day-cell {
+                    position:relative;
+
+                    & .day-number {
+                        z-index:2;position:absolute;width:24px;height:24px;line-height:24px;text-align:center;left:50%;top:2px;margin-left:-12.5px;
+                    }
+
+                    &.today {
+                        background-color:#fff;
+
+                        &:before {
+                            content:''; display:block; width:24px; height:24px;-webkit-border-radius:24px;-moz-border-radius:24px;border-radius:24px;background-color:#1a73e8;position:absolute; left:50%; top:2px; margin-left:-12.5px;z-index:1;
+                        }
+
+                        & .day-number {color:#fff;}
+                    }
                 }
-            }
-        }
-
-        & .week-row .day-cell {
-            position: relative;
-
-            & .day-number {z-index: 2;position: absolute;width: 25px;height: 25px;line-height: 25px;text-align: center;right: 1px;top: 2px;}
-
-            &.today {
-                background-color: #fff;
-
-                &:before {
-                    content: ''; display: block; width: 25px; height: 25px;-webkit-border-radius: 25px;-moz-border-radius: 25px;border-radius: 25px;background-color: #d77210;position: absolute; right: 1px;top: 2px;z-index: 1;
-                }
-
-                & .day-number {color: #fff;}
             }
         }
     }
