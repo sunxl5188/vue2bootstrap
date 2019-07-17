@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-
+    <div class="container text-right">
+        <a class="btn btn-primary" role="button" tabindex="0">可消失的弹出框</a>
     </div>
 </template>
 
@@ -15,7 +15,14 @@
 			}
 		},
 		mounted () {
-
+            $(document).on("click", ".btn-primary", function () {
+               $(this).popover({
+                 html:true,
+                 trigger:"focus",
+                 placement:"auto",
+                 content:"<dd><a href='#'>创建提醒</a></dd><dd><a href='#'>创建日程</a></dd>"
+               })
+            })
 		},
 		methods: {},
 		components: {}

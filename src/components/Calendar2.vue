@@ -24,6 +24,7 @@
                 @select="select"
                 @eventClick="handleEventClick"
         />
+
     </div>
 </template>
 
@@ -81,6 +82,9 @@
 		computed: {},
 		mounted () {
 			let self = this
+					setTimeout(function () {
+											$('#example').popover()
+					}, 1000)
 		},
 		methods: {
 			toggleWeekends () {
