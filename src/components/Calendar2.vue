@@ -68,7 +68,7 @@
                                     <select name="name" class="form-control">
                                         <option value="">不重复</option>
                                         <option value="">每天</option>
-                                        <option value="">每个工作日 (星期一至星期五)</option>
+                                        <option value="">每个工作日</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-2">
@@ -125,14 +125,14 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">优先级</label>
                                 <div class="col-sm-10">
-                                    <div class="radio">
-                                        <label>
+                                    <div class="radio priority">
+                                        <label class="high active" title="高">
                                             <input type="radio" name="" value="">
                                         </label>
-                                        <label>
+                                        <label class="in" title="中">
                                             <input type="radio" name="" value="">
                                         </label>
-                                        <label>
+                                        <label class="low" title="低">
                                             <input type="radio" name="" value="">
                                         </label>
                                     </div>
@@ -233,9 +233,7 @@
 				reTime: "",
 				reState: "",
 				sTitle: "",
-				createAch: {
-
-                },
+				createAch: {},
 				//-------------------------------
 				buttonText: {
 					today: "今天",
@@ -435,6 +433,22 @@
     }
 </style>
 <style scoped lang="scss">
+    #createSch {
+        & .priority {
+            & label {
+                width:20px;height:20px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;margin-right:15px;position:relative;cursor:pointer;
+                & input {filter:Alpha(Opacity=0); opacity:0;z-index:-1;}
+                &.high{background-color:#f08772;}
+                &.in{background-color:#3dc0ee;}
+                &.low{background-color:#a1c38e;}
+                &.active{
+                    &:before{
+                        content:'\e607';font-family:"iconfont";width:20px;height:20px;line-height:20px;text-align:center;position:absolute;left:0;top:0;color:#fff;
+                    }
+                }
+            }
+        }
+    }
     .dropdown {
         & .dropdown-menu {
             & li {
