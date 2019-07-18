@@ -15,14 +15,14 @@
 			}
 		},
 		mounted () {
-            $(document).on("click", ".btn-primary", function () {
-               $(this).popover({
-                 html:true,
-                 trigger:"focus",
-                 placement:"auto",
-                 content:"<dd><a href='#'>创建提醒</a></dd><dd><a href='#'>创建日程</a></dd>"
-               })
-            })
+            setTimeout(function () {
+							$(".btn-primary").popover({
+								html:true,
+								trigger:"focus",
+								placement:"auto",
+								content:"<dd><a href='#'>创建提醒</a></dd><dd><a href='#'>创建日程</a></dd>"
+							})
+            }, 1000)
 		},
 		methods: {},
 		components: {}

@@ -49,6 +49,8 @@ $font-color:(
     color:$c
   }
 }
+
+.dib_vm{display:inline-block;vertical-align:middle;}
 .validateTip {
   clear:both;
   color:nth($color, 4);

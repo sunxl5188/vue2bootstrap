@@ -17,27 +17,226 @@
                 :eventLimit="true"
                 :plugins="calendarPlugins"
                 :weekends="calendarWeekends"
-                :selectable="true"
                 :editable="false"
                 :events="calendarEvents"
                 :buttonText="buttonText"
-                @select="select"
                 @eventClick="handleEventClick"
         />
+
+        <div id="popoverMenu" style="display: none;">
+            <dd>
+                <i class='iconfont'>&#xe6b4;</i><a href='#' data-toggle="modal" data-backdrop="static"
+                                                   data-target="#createRe">创建提醒</a>
+            </dd>
+            <dd>
+                <i class='iconfont'>&#xe600;</i><a href='#' data-toggle="modal" data-backdrop="static"
+                                                   data-target="#createSch">创建日程</a>
+            </dd>
+        </div>
+
+
+        <div class="modal fade" id="createRe">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">创建提醒</h4>
+                    </div>
+                    <form action="" method="POST" class="form-horizontal"
+                          @submit.prevent="validateBeforeSubmit('form1')" data-vv-scope="form1">
+                        <div class="modal-body pl-30 pr-30">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">添加标题</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="reTitle" placeholder="请输入标题"
+                                           v-model="reTitle" v-validate="'required|max:20'" data-vv-as="标题">
+                                    <div class="validateTip" v-show="errors.has('form1.reTitle')">
+                                        {{ errors.first("form1.reTitle") }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择时间</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="reTime" placeholder="请选择日期"
+                                           v-model="reTime" v-validate="'required'" data-vv-as="时间">
+                                    <div class="validateTip" v-show="errors.has('form1.reTime')">
+                                        {{ errors.first("form1.reTime") }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <select name="name" class="form-control">
+                                        <option value="">不重复</option>
+                                        <option value="">每天</option>
+                                        <option value="">每个工作日 (星期一至星期五)</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="" value=""> 全天
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">提醒状态</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="reState" placeholder="已完成/未完成"
+                                           v-model="reState" v-validate="'required'" data-vv-as="提醒状态">
+                                    <div class="validateTip" v-show="errors.has('form1.reState')">
+                                        {{ errors.first("form1.reState") }}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default">完成并创建下一个</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="createSch">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">创建日程</h4>
+                    </div>
+                    <form action="" method="POST" class="form-horizontal"
+                          @submit.prevent="validateBeforeSubmitSch('form2')" data-vv-scope="form2">
+                        <div class="modal-body pl-30 pr-30">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">添加标题</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="sTitle" placeholder="请输入日程标题"
+                                           v-model="sTitle"
+                                           v-validate="'required'" data-vv-as="标题">
+                                    <div class="validateTip" v-show="errors.has('form2.sTitle')">
+                                        {{ errors.first("form2.sTitle") }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">优先级</label>
+                                <div class="col-sm-10">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="" value="">
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="" value="">
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="" value="">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择时间</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="name" class="form-control" placeholder="请选择日期"/>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="checkbox" style="display:inline-block;">
+                                        <label>
+                                            <input type="checkbox" name="" value=""> 全天
+                                        </label>
+                                    </div>
+
+                                    <div class="dropdown" style="display: inline-block;">
+                                        <i class="iconfont font20 c999 ml-15" style="cursor:pointer;"
+                                           data-toggle="dropdown">&#xe8bf;</i>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li class="active"><a href="#">不重复</a></li>
+                                            <li><a href="#">每天重复</a></li>
+                                            <li><a href="#">每周重复</a></li>
+                                            <li><a href="#">每月重复</a></li>
+                                            <li><a href="#">每年重复</a></li>
+                                            <li><a href="#">工作日重复</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="dropdown" style="display: inline-block;">
+                                        <i class="iconfont font20 c999 ml-15" style="cursor:pointer;"
+                                           data-toggle="dropdown">&#xe6b4;</i>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li class="active"><a href="#">关闭提醒</a></li>
+                                            <li><a href="#">开始时提醒</a></li>
+                                            <li><a href="#">5分钟提醒</a></li>
+                                            <li><a href="#">15分钟提醒</a></li>
+                                            <li><a href="#">30分钟提醒</a></li>
+                                            <li><a href="#">1小时前</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">参与者</label>
+                                <div class="col-sm-5">
+                                    <select name="name" class="form-control">
+                                        <option value=""> 请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">日程说明</label>
+                                <div class="col-sm-10"><textarea name="" class="form-control"
+                                                                 style="height: 80px;"></textarea></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">日程状态</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="name" class="form-control" placeholder="已完成/未完成"/>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default">完成并创建下一个</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </template>
 
 <script>
+	import "@~/js/VeeValidateConfig"
 	import FullCalendar from "@fullcalendar/vue"
 	import dayGridPlugin from "@fullcalendar/daygrid"
 	import timeGridPlugin from "@fullcalendar/timegrid"
 	import interactionPlugin from "@fullcalendar/interaction"
+	import request from "@~/js/request"
+
+	let db = new request()
 
 	export default {
 		name: "Calendar2",
 		data () {
 			return {
+				reTitle: "",
+				reTime: "",
+				reState: "",
+				sTitle: "",
+				createAch: {
+
+                },
+				//-------------------------------
 				buttonText: {
 					today: "今天",
 					month: "月",
@@ -82,9 +281,37 @@
 		computed: {},
 		mounted () {
 			let self = this
-					setTimeout(function () {
-											$('#example').popover()
-					}, 1000)
+			self.$nextTick(() => {
+				$(".fc-content-skeleton td").each(function (index, element) {
+					$("<a data-toggle='popover' role=\"button\" tabindex=\"" + index + "\"></a>").appendTo(element)
+				})
+				setTimeout(function () {
+
+					$("[data-toggle='popover']").popover({
+						html: true,
+						placement: "auto",
+						container: "body",
+						content: function () {
+							return $("#popoverMenu").html()
+						}
+					})
+
+					$("[data-toggle='popover']").on("click", function () {
+						let $this = $(this)
+						$("[data-toggle='popover']").popover("hide")
+						setTimeout(function () {
+							$this.popover("toggle")
+						}, 300)
+					})
+					$(document).on("click", function (e) {
+						let i = $(e.target)
+						if (!i.closest("[data-toggle='popover']").length > 0) {
+							$("[data-toggle='popover']").popover("hide")
+						}
+					})
+
+				}, 500)
+			})
 		},
 		methods: {
 			toggleWeekends () {
@@ -94,21 +321,71 @@
 				let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
 				calendarApi.gotoDate("2000-01-01") // call a method on the Calendar object
 			},
-			/*handleDateClick (arg) {
-				if (confirm("您想要添加活动吗" + arg.dateStr + " ?")) {
+			handleDateClick (arg) {
+				/*if (confirm("您想要添加活动吗" + arg.dateStr + " ?")) {
 					this.calendarEvents.push({ // add new event data
 						title: "New Event",
 						start: arg.date,
 						allDay: arg.allDay
 					})
-				}
-			},*/
-			select: function (info) {
-				alert("选择了 " + info.startStr + " to " + info.endStr)
+				}*/
 			},
+
 			// 用户点击事件触发
 			handleEventClick (info) {
 				console.log(info)
+			},
+			validateBeforeSubmit (scope) {
+				let self = this
+				self.$validator.validateAll(scope).then((result) => {
+					if (result) {
+						let formData = $("").serializeArray()
+						let params = new URLSearchParams()
+						formData.map(item => {
+							params.append(item.name, item.value)
+						})
+						db.postRequest("", params).then(res => {
+							if (res.status === 1) {
+								self.layer.alert(res.msg, {
+									icon: 1
+								}, function (i) {
+									self.layer.close(i)
+									self.$router.push("")
+								})
+							} else {
+								self.layer.alert(res.msg, {
+									icon: 2
+								})
+							}
+						})
+					}
+				})
+			},
+			validateBeforeSubmitSch (scope) {
+				let self = this
+				self.$validator.validateAll(scope).then((result) => {
+					if (result) {
+						let formData = $("").serializeArray()
+						let params = new URLSearchParams()
+						formData.map(item => {
+							params.append(item.name, item.value)
+						})
+						db.postRequest("", params).then(res => {
+							if (res.status === 1) {
+								self.layer.alert(res.msg, {
+									icon: 1
+								}, function (i) {
+									self.layer.close(i)
+									self.$router.push("")
+								})
+							} else {
+								self.layer.alert(res.msg, {
+									icon: 2
+								})
+							}
+						})
+					}
+				})
 			}
 		},
 		components: {FullCalendar},
@@ -133,6 +410,40 @@
     .fc-button-group {
         & button {
             &.fc-button-primary {
+            }
+        }
+    }
+    .fc-body {
+        & .fc-bg {
+        }
+        & .fc-content-skeleton {
+            bottom:0;
+            & > table {
+                height:100%;
+                & [data-toggle="popover"] {
+                    display:block;width:100%;height:100%;
+                }
+            }
+        }
+    }
+    .popover-content {
+        padding:15px 30px;
+        & dd {
+            line-height:35px;
+            & a {display:inline-block;vertical-align:middle;margin-left:5px;color:#666;}
+        }
+    }
+</style>
+<style scoped lang="scss">
+    .dropdown {
+        & .dropdown-menu {
+            & li {
+                &.active {
+                    &:after {
+                        content:'\e607';font-family:"iconfont";width:20px;height:20px;line-height:20px;text-align:center;position:absolute;right:10px;top:3px;
+                    }
+                    & a {background-color:transparent;color:#333;}
+                }
             }
         }
     }
