@@ -1,11 +1,18 @@
+import layer from "layui-layer"
 import webuploader from "webuploader"
 
-export default function webUpload (options, vue) {
+/**
+ * 图片上传
+ * @param assign Vue 要赋值的对象
+ * @param options 上传配置参数
+ * @调用方法 webupload(self.file_id, {...})
+ */
+export default function webUpload (assign, options) {
 	let config = {
 		auto: true,
 		swf: "/static/Uploader.swf",
 		server: "http://www.js.me/demo/data.php?action=upload",
-		imageList: "", // 上传时的图片列表 ID
+		fileList: {id: "", type: ""}, // 上传显示的列表 id显示的div  type显示图片或文件
 		pick: {
 			id: "#picker",
 			label: "", // 请采用 innerHTML 代替
@@ -24,58 +31,79 @@ export default function webUpload (options, vue) {
 		method: "POST",
 		fileNumLimit: undefined, // 验证文件总数量
 		fileSizeLimit: undefined, // 验证文件总大小是否超出限制
-		fileSingleSizeLimit: 1024 * 1024 * 2 // 验证单个文件大小是否超出限制
+		fileSingleSizeLimit: 1024 * 1024 * 2, // 验证单个文件大小是否超出限制
+		thumbnail: {width: 150, className: "file-lg"}
 	}
 	let opts = $.extend({}, config, options)
 
 	let uploader = new webuploader.Uploader.create(opts)
 
 	// 显示被添加的图片列表
-	if (opts.imageList) {
+	if (opts.fileList.id !== "" && opts.fileList.type !== "") {
 		uploader.on("fileQueued", function (file) {
-			let $li = $(
-				"<div id=\"" + file.id + "\" class=\"file-item thumbnail\" fid=''>" +
-				"<img>" +
-				"<div class=\"file-info\">" + file.name + "</div>" +
-				"<div class=\"file-panel\"><span class=\"state\"></span><span class=\"cancel glyphicon glyphicon-trash\"></span></div>" +
-				"</div>"
-				),
+			let $li = ""
+			let $img = ""
+			// 图片列表
+			if (opts.fileList.type === "image") {
+				$li = $(
+					"<div id=\"" + file.id + "\" class=\"file-item " + opts.thumbnail.className + "\" fid=''>" +
+					"<img>" +
+					"<div class=\"file-panel\"><span class=\"state\"></span><a href=\"javascript:void(0);\" class=\"cancel\">删除</a></div>" +
+					"<div class=\"fileProgress\"><div></div></div>" +
+					"</div>"
+				)
 				$img = $li.find("img")
 
-			// $list为容器jQuery实例
-			$(opts.imageList).append($li)
+				// 创建缩略图
+				// 如果为非图片文件，可以不用调用此方法。
+				// thumbnailWidth x thumbnailHeight 为 100 x 100
+				let ratio = window.devicePixelRatio || 1
+				let thumbnailWidth = opts.thumbnail.width * ratio
+				let thumbnailHeight = opts.thumbnail.width * ratio
 
-			// 创建缩略图
-			// 如果为非图片文件，可以不用调用此方法。
-			// thumbnailWidth x thumbnailHeight 为 100 x 100
-			uploader.makeThumb(file, function (error, src) {
-				if (error) {
-					$img.replaceWith("<span>不能预览</span>")
-					return
-				}
-				$img.attr("src", src)
-			}, 100, 100)
+				uploader.makeThumb(file, function (error, src) {
+					if (error) {
+						$img.replaceWith("<span>不能预览</span>")
+						return
+					}
+					$img.attr("src", src)
+				}, thumbnailWidth, thumbnailHeight)
+
+			}
+			// 文件列表
+			if (opts.fileList.type === "file") {
+
+			}
+
+			// $list为容器jQuery实例
+			$(opts.fileList.id).append($li)
+
+			// 删除文件
 			$li.on("click", ".cancel", function () {
+				let fid = $li.attr("fid")
 				uploader.removeFile(file)
-				console.log($li.attr("fid"))
+				$li.remove()
+				console.log(fid)
 			})
 		})
 
 		uploader.on("uploadComplete", function (file) {
-			$("#" + file.id).find(".progress").fadeOut()
+			$("#" + file.id).find(".fileProgress").fadeOut()
 		})
 	}
 
 	// 上传文件时进度条
 	uploader.on("uploadProgress", function (file, percentage) {
-		console.log(percentage * 100)
+		$("#" + file.id).find(".fileProgress > div").width(percentage * 100 + "%")
 	})
 
 	// 上传成功
 	uploader.on("uploadSuccess", function (file, response) {
-		vue.$data.file_id.push(response.data.id)
-		$("#" + file.id).find(".state").text("已上传")
-		$("#" + file.id).attr("fid", response.data.id)
+		let $this = $("#" + file.id)
+		$this.find(".file-panel").show()
+		$this.find(".state").text("上传成功")
+		$this.attr("fid", response.data.id)
+		assign.push(response.data)
 	})
 
 	// 上传出错时
@@ -86,13 +114,13 @@ export default function webUpload (options, vue) {
 	// 返回错误信息
 	uploader.on("error", function (error) {
 		if (error === "F_EXCEED_SIZE") {
-			vue.layer.alert("文件超出指定大小", {icon: 2})
+			layer.alert("文件超出指定大小", {icon: 2})
 		}
 		if (error === "Q_TYPE_DENIED") {
-			vue.layer.alert("文件类型不正确！", {icon: 2})
+			layer.alert("文件类型不正确！", {icon: 2})
 		}
 		if (error === "Q_EXCEED_NUM_LIMIT") {
-			vue.layer.alert("文件超出个数！", {icon: 2})
+			layer.alert("文件超出个数！", {icon: 2})
 		}
 	})
 
