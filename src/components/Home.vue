@@ -2,10 +2,10 @@
     <div class="container">
         <a class="btn btn-primary" role="button" tabindex="0">可消失的弹出框</a>
         <form action="" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
-             <div class="form-group">
+            <div class="form-group">
                 <label class="col-sm-2 control-label">所在地区</label>
                 <div class="col-sm-10">
-                    <CitySelect></CitySelect>
+                    <CitySelect p="230000" c="230001" a="238000" @cityCallback="cityCallback"></CitySelect>
                 </div>
             </div>
 
@@ -35,7 +35,11 @@
 				})
 			}, 1000)
 		},
-		methods: {},
+		methods: {
+			cityCallback (data) {
+				console.log(data)
+			}
+		},
 		components: {CitySelect}
 	}
 </script>
