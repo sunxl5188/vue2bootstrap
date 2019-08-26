@@ -1,3 +1,4 @@
+import { bytesToSize } from "@~/js/utils"
 import layer from "layui-layer"
 import webuploader from "webuploader"
 
@@ -32,7 +33,7 @@ export default function webUpload (assign, options) {
 		fileNumLimit: undefined, // 验证文件总数量
 		fileSizeLimit: undefined, // 验证文件总大小是否超出限制
 		fileSingleSizeLimit: 1024 * 1024 * 2, // 验证单个文件大小是否超出限制
-		thumbnail: {width: 150, className: "file-lg"}
+		thumbnail: {width: 150, className: "image-lg"}
 	}
 	let opts = $.extend({}, config, options)
 
@@ -46,10 +47,10 @@ export default function webUpload (assign, options) {
 			// 图片列表
 			if (opts.fileList.type === "image") {
 				$li = $(
-					"<div id=\"" + file.id + "\" class=\"file-item " + opts.thumbnail.className + "\" fid=''>" +
+					"<div id=\"" + file.id + "\" class=\"image-item " + opts.thumbnail.className + "\" fid=''>" +
 					"<img>" +
-					"<div class=\"file-panel\"><span class=\"state\"></span><a href=\"javascript:void(0);\" class=\"cancel\">删除</a></div>" +
-					"<div class=\"fileProgress\"><div></div></div>" +
+					"<div class=\"image-panel\"><span class=\"data\"></span><a href=\"javascript:void(0);\" class=\"cancel\">删除</a></div>" +
+					"<div class=\"uploadIfy-progress\"><div class='uploadIfy-progress-bar'></div></div>" +
 					"</div>"
 				)
 				$img = $li.find("img")
@@ -72,7 +73,13 @@ export default function webUpload (assign, options) {
 			}
 			// 文件列表
 			if (opts.fileList.type === "file") {
-
+				$li = $("<div class=\"uploadIfy-queue-item\" id=\"" + file.id + "\" fid=\"\">\n" +
+					"<div class=\"cancel\"><a href=\"javascript:void(0);\">X</a></div>\n" +
+					"<span class=\"fileName\">" + file.name + " (" + bytesToSize(file.size) + ")</span><span class=\"data\"></span>\n" +
+					"<div class=\"uploadIfy-progress\">\n" +
+					"<div class=\"uploadIfy-progress-bar\"></div>\n" +
+					"</div>\n" +
+					"</div>")
 			}
 
 			// $list为容器jQuery实例
@@ -88,27 +95,27 @@ export default function webUpload (assign, options) {
 		})
 
 		uploader.on("uploadComplete", function (file) {
-			$("#" + file.id).find(".fileProgress").fadeOut()
+			$("#" + file.id).find(".uploadIfy-progress").fadeOut()
 		})
 	}
 
 	// 上传文件时进度条
 	uploader.on("uploadProgress", function (file, percentage) {
-		$("#" + file.id).find(".fileProgress > div").width(percentage * 100 + "%")
+		$("#" + file.id).find(".uploadIfy-progress-bar").width(percentage * 100 + "%")
 	})
 
 	// 上传成功
 	uploader.on("uploadSuccess", function (file, response) {
 		let $this = $("#" + file.id)
-		$this.find(".file-panel").show()
-		$this.find(".state").text("上传成功")
+		$this.find(".image-panel").show() // 显示图片时
+		$this.find(".data").text("上传成功")
 		$this.attr("fid", response.data.id)
 		assign.push(response.data)
 	})
 
 	// 上传出错时
 	uploader.on("uploadError", function (file) {
-		$("#" + file.id).find(".state").text("上传出错")
+		$("#" + file.id).find(".data").text("上传出错")
 	})
 
 	// 返回错误信息
@@ -123,5 +130,11 @@ export default function webUpload (assign, options) {
 			layer.alert("文件超出个数！", {icon: 2})
 		}
 	})
-
 }
+setTimeout(function () {
+	// 删除编辑时所输出的默认文件
+	$(document).on("click", "[id^=EDIT_WU_FILE] .cancel", function () {
+		let fid = $(this).parents("[id^=EDIT_WU_FILE]").attr("fid")
+		console.log(fid)
+	})
+}, 1000)
