@@ -10,7 +10,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin")
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
-const PrerenderSpaPlugin = require("prerender-spa-plugin")
+const PrerenderSPAPlugin = require("prerender-spa-plugin")
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
 
 const env = require("../config/prod.env")
 
@@ -118,9 +119,17 @@ const webpackConfig = merge(baseWebpackConfig, {
 			}
 		]),
 
-		new PrerenderSpaPlugin({
-			staticDir: path.join(config.build.assetsRoot),
-			router: ["/", "/List"]
+		new PrerenderSPAPlugin({
+			staticDir: path.join(__dirname, "../dist"),
+			routes: ["/","/List"],
+
+			renderer: new Renderer({
+				inject: {
+					foo: "bar"
+				},
+				headless: false,
+				renderAfterDocumentEvent: "render-event"
+			})
 		})
 	]
 })
