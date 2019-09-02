@@ -14,7 +14,7 @@
         </select>
         <select class="form-control selectpicker show-tick" v-model="area"
                 @change="getCityList($event.target.selectedIndex - 1, 3)"
-                :style="{'display:none;': aList.length > 0}">
+                :style="{'display:none;': aList.length > 0}" v-if="aDisplay">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in aList">{{item.title}}</option>
         </select>
@@ -43,6 +43,10 @@
 				type: String,
 				default: ""
 			},
+			aDisplay: {
+				type: Boolean,
+				default: true
+			}
 		},
 		data () {
 			return {

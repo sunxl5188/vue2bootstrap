@@ -5,7 +5,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">所在地区</label>
                 <div class="col-sm-10">
-                    <CitySelect p="230000" c="230001" a="238000" @cityCallback="cityCallback"></CitySelect>
+                    <CitySelect p="230000" c="230001" a="238000" :aDisplay="false" @cityCallback="cityCallback"></CitySelect>
                 </div>
             </div>
 
