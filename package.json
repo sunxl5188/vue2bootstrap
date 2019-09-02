@@ -16,6 +16,7 @@
     "@fullcalendar/timegrid": "^4.2.0",
     "@fullcalendar/vue": "^4.2.2",
     "babel-polyfill": "^6.26.0",
+    "bootstrap-select": "^1.13.10",
     "html2canvas": "^1.0.0-rc.3",
     "jspdf": "^1.5.3",
     "layui-layer": "^1.0.9",

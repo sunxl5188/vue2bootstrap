@@ -1,18 +1,20 @@
 <template>
     <div class="form-inline">
         <!--省市区三级联动菜单-->
-        <select name="" class="form-control" v-model="province"
-                @change="getCityList($event.target.selectedIndex - 1, 1)">
+        <select class="form-control selectpicker show-tick" v-model="province"
+                @change="getCityList($event.target.selectedIndex - 1, 1);refreshSelect(1)">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in pList">{{item.title}}</option>
         </select>
-        <select name="" class="form-control" v-model="city" @change="getCityList($event.target.selectedIndex - 1, 2)"
-                v-if="cList.length > 0">
+        <select class="form-control selectpicker show-tick" v-model="city"
+                @change="getCityList($event.target.selectedIndex - 1, 2);refreshSelect(2)"
+                :style="{'display:none;': cList.length > 0}">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in cList">{{item.title}}</option>
         </select>
-        <select name="" class="form-control" v-model="area" @change="getCityList($event.target.selectedIndex - 1, 3)"
-                v-if="aList.length > 0">
+        <select class="form-control selectpicker show-tick" v-model="area"
+                @change="getCityList($event.target.selectedIndex - 1, 3)"
+                :style="{'display:none;': aList.length > 0}">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in aList">{{item.title}}</option>
         </select>
@@ -23,6 +25,8 @@
 
 <script>
 	import cityJson from "@@/json/cityjson"
+	import "bootstrap-select"
+	import "bootstrap-select/dist/js/i18n/defaults-zh_CN"
 
 	export default {
 		name: "CitySelect",
@@ -101,6 +105,17 @@
 						return index
 					}
 				}, -1)
+			},
+			// 选择时，列表值变动时刷新select样式
+			refreshSelect (index) {
+				setTimeout(function () {
+					$(".selectpicker").selectpicker("refresh")
+					if (index === 1) {
+						$(".form-inline .bootstrap-select").last().hide()
+					} else {
+						$(".form-inline .bootstrap-select").last().show()
+					}
+				}, 100)
 			}
 		}
 	}
