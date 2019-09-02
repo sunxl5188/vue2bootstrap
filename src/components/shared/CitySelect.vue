@@ -1,18 +1,18 @@
 <template>
-    <div class="form-inline">
+    <div class="form-inline" :id="id">
         <!--省市区三级联动菜单-->
-        <select class="form-control selectpicker show-tick" v-model="province"
+        <select :name="pName" class="form-control selectpicker show-tick" v-model="province"
                 @change="getCityList($event.target.selectedIndex - 1, 1);refreshSelect()">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in pList">{{item.title}}</option>
         </select>
-        <select class="form-control selectpicker show-tick" v-model="city"
+        <select :name="cName" class="form-control selectpicker show-tick" v-model="city"
                 @change="getCityList($event.target.selectedIndex - 1, 2);refreshSelect()"
                 :style="{'display:none;': cList.length > 0}">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in cList">{{item.title}}</option>
         </select>
-        <select class="form-control selectpicker show-tick" v-model="area"
+        <select :name="aName" class="form-control selectpicker show-tick" v-model="area"
                 @change="getCityList($event.target.selectedIndex - 1, 3)"
                 :style="{'display:none;': aList.length > 0}" v-if="aDisplay">
             <option value="">请选择</option>
@@ -43,6 +43,18 @@
 				type: String,
 				default: ""
 			},
+			pName: {
+				type: String,
+				default: "province"
+			},
+			cName: {
+				type: String,
+				default: "city"
+			},
+			aName: {
+				type: String,
+				default: "area"
+			},
 			aDisplay: {
 				type: Boolean,
 				default: true
@@ -50,6 +62,7 @@
 		},
 		data () {
 			return {
+				id: "",
 				province: this.p,
 				city: this.c,
 				area: this.a,
@@ -60,6 +73,7 @@
 		},
 		mounted () {
 			let self = this
+			self.id = "city_" + (new Date()).getTime()
 			self.$nextTick(() => {
 				if (self.province) {
 					let i = self.arrObjIndex(self.pList, self.province)
@@ -69,6 +83,20 @@
 					let i = self.arrObjIndex(self.cList, self.city)
 					self.initialList(i, 2)
 				}
+
+				setTimeout(function () {
+					let $this = $("#" + self.id).find(".bootstrap-select")
+					if (self.cList.length < 1) {
+						$this.eq(1).hide()
+					} else {
+						$this.eq(1).show()
+					}
+					if (self.aList.length < 1) {
+						$this.eq(2).hide()
+					} else {
+						$this.eq(2).show()
+					}
+				}, 1000)
 			})
 		},
 		methods: {

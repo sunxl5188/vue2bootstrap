@@ -5,10 +5,15 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">所在地区</label>
                 <div class="col-sm-10">
-                    <CitySelect p="230000" c="230001" a="238000" :aDisplay="false" @cityCallback="cityCallback"></CitySelect>
+                    <CitySelect p="230000" c="230001" a="238000" :aDisplay="true" @cityCallback="cityCallback"></CitySelect>
                 </div>
             </div>
-
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所在地区二</label>
+                <div class="col-sm-10">
+                    <CitySelect p="050011" c="050011" a="050100" :aDisplay="true" @cityCallback="cityCallback"></CitySelect>
+                </div>
+            </div>
         </form>
 
     </div>
