@@ -2,12 +2,12 @@
     <div class="form-inline">
         <!--省市区三级联动菜单-->
         <select class="form-control selectpicker show-tick" v-model="province"
-                @change="getCityList($event.target.selectedIndex - 1, 1);refreshSelect(1)">
+                @change="getCityList($event.target.selectedIndex - 1, 1);refreshSelect()">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in pList">{{item.title}}</option>
         </select>
         <select class="form-control selectpicker show-tick" v-model="city"
-                @change="getCityList($event.target.selectedIndex - 1, 2);refreshSelect(2)"
+                @change="getCityList($event.target.selectedIndex - 1, 2);refreshSelect()"
                 :style="{'display:none;': cList.length > 0}">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="item in cList">{{item.title}}</option>
@@ -107,14 +107,18 @@
 				}, -1)
 			},
 			// 选择时，列表值变动时刷新select样式
-			refreshSelect (index) {
+			refreshSelect () {
 				setTimeout(function () {
 					$(".selectpicker").selectpicker("refresh")
-					if (index === 1) {
-						$(".form-inline .bootstrap-select").last().hide()
-					} else {
-						$(".form-inline .bootstrap-select").last().show()
-					}
+					setTimeout(function () {
+						$(".form-inline .selectpicker").each(function () {
+							if ($(this).find("option").length > 1) {
+								$(this).parents(".bootstrap-select").show()
+							} else {
+								$(this).parents(".bootstrap-select").hide()
+							}
+						})
+					}, 100)
 				}, 100)
 			}
 		}
